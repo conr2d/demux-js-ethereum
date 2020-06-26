@@ -1,0 +1,28 @@
+{
+  "name": "demux-ethereum",
+  "version": "1.0.0",
+  "description": "Demux-js Action Reader implementations for Ethereum blockchains",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": "https://github.com/conr2d/demux-js-ethereum",
+  "author": "Jeeyong Um <conr2d@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bunyan": "^1.8.13",
+    "demux": "^4.0.0",
+    "web3-utils": "^1.2.9"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^4.11.6",
+    "@types/bunyan": "^1.8.6",
+    "@types/express": "^4.17.6",
+    "@types/node": "^14.0.14",
+    "@types/request-promise-native": "^1.0.17",
+    "typescript": "^3.9.5"
+  },
+  "scripts": {
+    "build": "rm -rf dist/* && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
+  }
+}
