@@ -2,7 +2,7 @@ import { AbstractActionReader, NotInitializedError } from "demux";
 import { EthereumTransactionReaderOptions } from "./interfaces";
 import request from "request-promise-native";
 import { retry } from "./utils";
-import { RetrieveBlockError, RetrieveHeadBlockError, RetrieveIrreversibleBlockError } from "./errors";
+import { RetrieveBlockError, RetrieveHeadBlockError, RetrieveIrreversibleBlockError, MultipleBlockStateError } from "./errors";
 import { EthereumBlock } from "./EthereumBlock";
 
 export class EthereumTransactionReader extends AbstractActionReader {
@@ -57,7 +57,19 @@ export class EthereumTransactionReader extends AbstractActionReader {
             id: 0,
           },
         });
-        return new EthereumBlock(rawBlock.result);
+        const logs = await request.post({
+          url: this.ethereumEndpoint,
+          json: {
+            jsonrpc: "2.0",
+            method: "eth_getLogs",
+            params: [{fromBlock: blockNumberHex, toBlock: blockNumberHex}],
+            id: 0,
+          },
+        });
+        if (logs.result.length && rawBlock.result.hash !== logs.result[0].blockHash) {
+          throw new MultipleBlockStateError(blockNumber);
+        }
+        return new EthereumBlock({...rawBlock.result, logs: logs.result});
       }, numRetries, waitTimeMs);
       return block;
     } catch (err) {
