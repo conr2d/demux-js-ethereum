@@ -1,6 +1,6 @@
 {
   "name": "demux-ethereum",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "Demux-js Action Reader implementations for Ethereum blockchains",
   "main": "index.js",
   "types": "index.d.ts",
